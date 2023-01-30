@@ -3,6 +3,7 @@ package org.mustabelmo.pdfcreator;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.File;
@@ -23,13 +24,14 @@ public class ImageToPdfWriter extends AbstractImageToPdfWriter {
 	@Override
 	public void write() {
 		final List<File> filteredFiles = getFilteredFiles();
-		final Document document = new CustomizedDocument(1080);
+		final CustomizedDocument document = new CustomizedDocument();
 		
 		try {
 			PdfWriter.getInstance(document, new FileOutputStream(outputFile));
 			document.open();
 			for (File file : filteredFiles) {
 				final Image image = Image.getInstance(file.getAbsolutePath());
+				document.setDimensions(image.getWidth(), image.getHeight());
 				document.newPage();
 				document.add(image);
 			}
